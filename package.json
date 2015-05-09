@@ -1,0 +1,35 @@
+{
+  "name": "react-flux-example",
+  "version": "1.0.0",
+  "description": "Reactでfluxを使った場合の簡単なサンプル。",
+  "main": "src/script/main.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build",
+    "start": "gulp"
+  },
+  "author": "hbsnow",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.1.13",
+    "babel-core": "^5.1.13",
+    "babel-loader": "^5.0.0",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-gzip": "^1.1.0",
+    "gulp-jade": "^1.0.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-webpack": "^1.4.0",
+    "gulp-webserver": "^0.9.0",
+    "run-sequence": "^1.0.2",
+    "webpack": "^1.8.9"
+  },
+  "dependencies": {
+    "events": "^1.0.2",
+    "flux": "^2.0.3",
+    "lodash": "^3.8.0",
+    "papaparse": "^4.1.1",
+    "react": "^0.13.3"
+  }
+}
