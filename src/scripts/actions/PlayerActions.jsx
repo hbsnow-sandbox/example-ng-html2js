@@ -3,11 +3,11 @@ import PlayerConstants from '../constants/PlayerConstants';
 
 export default {
 
-	preview: (data) => {
-		AppDispatcher.dispatch({
-			actionType: PlayerConstants.PREVIEW,
-			data: data
-		});
-	}
+  preview: (data) => {
+    AppDispatcher.dispatch({
+      actionType: PlayerConstants.PREVIEW,
+      data: data
+    });
+  }
 
 };

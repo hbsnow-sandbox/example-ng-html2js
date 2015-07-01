@@ -1,0 +1,9 @@
+# JavaScript
+[*.js,*.jsx]
+indent_style: space
+indent_size: 2
+
+# Jade
+[*.jade]
+indent_style: tab
+indent_size: 4

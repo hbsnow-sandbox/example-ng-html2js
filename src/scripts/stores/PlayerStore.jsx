@@ -6,46 +6,46 @@ const CHANGE_EVENT = 'change';
 
 class PlayerStore extends EventEmitter {
 
-	constructor() {
-		super();
+  constructor() {
+    super();
 
-		this.players = {};
+    this.players = {};
 
-		AppDispatcher.register(this.handler.bind(this));
-	}
+    AppDispatcher.register(this.handler.bind(this));
+  }
 
-	getAll() {
-		return this.players;
-	}
+  getAll() {
+    return this.players;
+  }
 
-	emitChange() {
-		this.emit(CHANGE_EVENT);
-	}
+  emitChange() {
+    this.emit(CHANGE_EVENT);
+  }
 
-	addChangeListener(callback) {
-		this.on(CHANGE_EVENT, callback);
-	}
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
 
-	removeChangeListener(callback) {
-		this.removeListener(CHANGE_EVENT, callback);
-	}
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
 
-	/**
-	 * Register callback to handle all updates
-	 *
-	 * @param {Object} action
-	 */
-	handler(action) {
-		let data = action.data;
+  /**
+   * Register callback to handle all updates
+   *
+   * @param {Object} action
+   */
+  handler(action) {
+    let data = action.data;
 
-		switch (action.actionType) {
-			case PlayerConstants.PREVIEW:
-				this.players = data;
-				this.emitChange();
+    switch (action.actionType) {
+      case PlayerConstants.PREVIEW:
+        this.players = data;
+        this.emitChange();
 
-				break;
-		}
-	}
+        break;
+    }
+  }
 
 }
 
