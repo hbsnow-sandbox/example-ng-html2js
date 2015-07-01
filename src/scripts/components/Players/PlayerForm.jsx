@@ -3,7 +3,6 @@ import Papa from 'papaparse';
 import PlaylerActions from '../../actions/PlayerActions';
 
 export default class PlayerForm extends React.Component {
-
   handleChange(e) {
     let reader = new FileReader();
 
@@ -30,5 +29,4 @@ export default class PlayerForm extends React.Component {
       </form>
     );
   }
-
 }

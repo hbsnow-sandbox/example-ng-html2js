@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var webpack = require('webpack-stream');
 var del = require('del');
 var runSequence = require('run-sequence');
 var $ = require('gulp-load-plugins')();
@@ -14,46 +15,37 @@ var watch = false;
  */
 
 gulp.task('build:js', function () {
-	var js = './src/scripts/main.jsx';
-	var loader = {
-		loaders: [
-			{
-				test: /\.jsx$/,
-				loader: 'babel-loader?stage=1'
-			}
-		]
-	}
+  var js = 'src/scripts/main.jsx';
+  var config = {
+    output: {
+      filename: '[name].js'
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.jsx$/,
+          loader: 'babel-loader?stage=1'
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['', '.js', '.jsx']
+    }
+  };
 
-	if (watch) {
-		return gulp.src(js)
-			.pipe($.webpack({
-				watch: true,
-				devtool: '#inline-source-map',
-				output: {
-					filename: '[name].js'
-				},
-				module: loader,
-				resolve: {
-					extensions: ['', '.js', '.jsx']
-				}
-			}))
-			.pipe(gulp.dest('./build/'));
-	} else {
-		return gulp.src(js)
-			.pipe($.webpack({
-				output: {
-					filename: '[name].js'
-				},
-				module: loader,
-				resolve: {
-					extensions: ['', '.js', '.jsx']
-				}
-			}))
-			.pipe($.uglify())
-			.pipe(gulp.dest('./build/'))
-			.pipe($.gzip())
-			.pipe(gulp.dest('./build/'));
-	}
+  if(watch) {
+    config.watch = true;
+    config.devtool = '#inline-source-map';
+
+    return gulp.src(js)
+      .pipe(webpack(config))
+      .pipe(gulp.dest('build/'));
+  } else {
+    return gulp.src(js)
+      .pipe(webpack(config))
+      .pipe($.uglify())
+      .pipe(gulp.dest('build/'));
+  }
 });
 
 
@@ -63,19 +55,9 @@ gulp.task('build:js', function () {
  */
 
 gulp.task('build:jade', function() {
-	var jade = './src/index.jade';
-
-	if (watch) {
-		return gulp.src(jade)
-			.pipe($.jade())
-			.pipe(gulp.dest('./build/'));
-	} else {
-		return gulp.src(jade)
-			.pipe($.jade())
-			.pipe(gulp.dest('./build/'))
-			.pipe($.gzip())
-			.pipe(gulp.dest('./build/'));
-		}
+  return gulp.src('src/index.jade')
+    .pipe($.jade())
+    .pipe(gulp.dest('build/'));
 });
 
 
@@ -85,8 +67,8 @@ gulp.task('build:jade', function() {
  */
 
 gulp.task('serve', function() {
-	return gulp.src('build')
-		.pipe($.webserver());
+  return gulp.src('build')
+    .pipe($.webserver());
 });
 
 
@@ -94,8 +76,8 @@ gulp.task('serve', function() {
  * clean
  */
 
-gulp.task('clean:build', function(cb) {
-	del(['dist/**/*', '!dist/.git{,/**}'], { dot: true }, cb);
+gulp.task('clean', function(cb) {
+  del(['dist/**/*', '!dist/.git{,/**}'], {dot: true}, cb);
 });
 
 
@@ -105,13 +87,12 @@ gulp.task('clean:build', function(cb) {
  */
 
 gulp.task('watch', ['clean:build', 'serve'], function(cb) {
-	watch = true;
+  watch = true;
 
-	runSequence('build', function() {
-		gulp.watch('./src/scripts/**/*.{jsx,es6}', ['build:js']);
-		gulp.watch('./src/index.jade', ['build:jade']);
-		cb();
-	});
+  runSequence(['build'], function() {
+    gulp.watch('src/index.jade', ['build:jade']);
+    cb();
+  });
 });
 
 
@@ -120,8 +101,8 @@ gulp.task('watch', ['clean:build', 'serve'], function(cb) {
  * build
  */
 
-gulp.task('build', ['clean:build'], function (cb) {
-	runSequence(['build:js', 'build:jade'], cb);
+gulp.task('build', ['clean'], function (cb) {
+  runSequence(['build:js', 'build:jade'], cb);
 });
 
 
@@ -130,4 +111,4 @@ gulp.task('build', ['clean:build'], function (cb) {
  * default
  */
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['build']);
